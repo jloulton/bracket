@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👶 BABY NAME ZONE 👶</title>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=Lilita+One&family=Varela+Round&display=swap" rel="stylesheet">
+<style>
+:root {
+  --neon-pink: #FF2D9B;
+  --neon-cyan: #00F5FF;
+  --neon-yellow: #FFE600;
+  --neon-green: #39FF14;
+  --neon-orange: #FF6A00;
+  --neon-purple: #BF00FF;
+  --dark-bg: #0A0010;
+  --panel-bg: #100020;
+  --tile1: #1A0035;
+  --tile2: #0D001E;
+  --text-main: #FFFFFF;
+  --text-dim: #AA88CC;
+  --bevel-light: rgba(255,255,255,0.35);
+  --bevel-dark: rgba(0,0,0,0.6);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Varela Round', sans-serif;
+  background: var(--dark-bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── Carpet grid background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--tile1) 1px, transparent 1px),
+    linear-gradient(90deg, var(--tile1) 1px, transparent 1px),
+    linear-gradient(45deg, var(--tile2) 25%, transparent 25%, transparent 75%, var(--tile2) 75%),
+    linear-gradient(-45deg, var(--tile2) 25%, transparent 25%, transparent 75%, var(--tile2) 75%);
+  background-size: 40px 40px, 40px 40px, 20px 20px, 20px 20px;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Neon glow orbs ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 40% 30% at 15% 25%, rgba(191,0,255,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 25% at 85% 70%, rgba(0,245,255,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 20% at 50% 50%, rgba(255,45,155,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 1rem 5rem;
+}
+
+/* ── Marquee footer ── */
+.marquee-wrap {
+  background: var(--panel-bg);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--neon-purple);
+  border-top: 1px solid var(--neon-purple);
+  margin-top: 0.75rem;
+  box-shadow: 0 0 8px rgba(191,0,255,0.25);
+}
+.marquee-inner {
+  display: inline-block;
+  animation: marquee 18s linear infinite;
+  font-family: 'Righteous', cursive;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: #fff;
+  text-transform: uppercase;
+}
+@keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+
+/* ── Main header ── */
+.main-header {
+  text-align: center;
+  padding: 1.5rem 0 1rem;
+}
+.logo-text {
+  font-family: 'Lilita One', cursive;
+  font-size: 42px;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 35%, var(--neon-pink) 65%, var(--neon-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 12px rgba(255,45,155,0.6));
+  margin-bottom: 4px;
+}
+.logo-sub {
+  font-family: 'Righteous', cursive;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* ── Progress bar ── */
+.progress-section { padding: 0.75rem 0; }
+.progress-track {
+  height: 20px;
+  background: var(--panel-bg);
+  border: 2px solid var(--neon-purple);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(191,0,255,0.5), inset 0 0 6px rgba(0,0,0,0.5);
+  position: relative;
+}
+.progress-bar {
+  height: 100%;
+  background: repeating-linear-gradient(90deg, var(--neon-pink) 0px, var(--neon-orange) 20px, var(--neon-yellow) 40px, var(--neon-green) 60px, var(--neon-cyan) 80px, var(--neon-purple) 100px, var(--neon-pink) 120px);
+  background-size: 120px 100%;
+  animation: barscroll 1.5s linear infinite;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 10px rgba(255,230,0,0.8);
+}
+@keyframes barscroll { 0%{background-position:0 0} 100%{background-position:120px 0} }
+.progress-label {
+  text-align: center;
+  font-family: 'Righteous', cursive;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 6px var(--neon-yellow);
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+/* ── Round badge ── */
+.round-announce {
+  text-align: center;
+  margin: 0.75rem 0;
+}
+.round-tag {
+  display: inline-block;
+  font-family: 'Righteous', cursive;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 6px 20px;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0,245,255,0.3), inset 0 0 8px rgba(0,245,255,0.05);
+  background: var(--panel-bg);
+}
+
+/* ── Bevel panel ── */
+.bevel-panel {
+  background: var(--panel-bg);
+  border-top: 3px solid var(--bevel-light);
+  border-left: 3px solid var(--bevel-light);
+  border-bottom: 3px solid var(--bevel-dark);
+  border-right: 3px solid var(--bevel-dark);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.bevel-panel::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-left: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+
+/* ── VS matchup ── */
+.vs-label {
+  text-align: center;
+  font-family: 'Lilita One', cursive;
+  font-size: 28px;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 14px var(--neon-yellow), 0 0 28px rgba(255,230,0,0.4);
+  padding: 8px 0;
+  animation: pulse-vs 1.8s ease-in-out infinite;
+}
+@keyframes pulse-vs { 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:0.75; transform:scale(0.96)} }
+
+/* ── Neon buttons ── */
+.neon-btn {
+  display: block;
+  width: 100%;
+  padding: 18px 16px;
+  font-family: 'Lilita One', cursive;
+  font-size: 28px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  transition: transform 0.1s, filter 0.1s;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.neon-btn:active { transform: scale(0.97); }
+
+.btn-top {
+  background: #1E003A;
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255,45,155,0.5);
+  border-top: 3px solid var(--bevel-light);
+  border-left: 3px solid var(--bevel-light);
+  border-bottom: 3px solid var(--bevel-dark);
+  border-right: 3px solid var(--bevel-dark);
+  box-shadow: 0 0 20px rgba(255,45,155,0.2), inset 0 0 15px rgba(255,45,155,0.05);
+}
+.btn-top:hover {
+  background: #280050;
+  filter: brightness(1.15);
+  box-shadow: 0 0 30px rgba(255,45,155,0.45), inset 0 0 20px rgba(255,45,155,0.1);
+}
+
+.btn-bot {
+  background: #001E3A;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px rgba(0,245,255,0.5);
+  border-top: 3px solid var(--bevel-light);
+  border-left: 3px solid var(--bevel-light);
+  border-bottom: 3px solid var(--bevel-dark);
+  border-right: 3px solid var(--bevel-dark);
+  box-shadow: 0 0 20px rgba(0,245,255,0.2), inset 0 0 15px rgba(0,245,255,0.05);
+}
+.btn-bot:hover {
+  background: #002850;
+  filter: brightness(1.15);
+  box-shadow: 0 0 30px rgba(0,245,255,0.4), inset 0 0 20px rgba(0,245,255,0.1);
+}
+
+.btn-name-sub {
+  display: block;
+  font-family: 'Varela Round', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  margin-top: 2px;
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+}
+
+/* ── Skip button ── */
+.skip-wrap { text-align: center; margin: 0.5rem 0 1rem; }
+.skip-btn {
+  background: transparent;
+  border: 1px dashed rgba(170,136,204,0.4);
+  color: var(--text-dim);
+  padding: 7px 18px;
+  font-family: 'Varela Round', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.15s;
+}
+.skip-btn:hover { border-color: var(--text-dim); color: #fff; }
+
+/* ── Ticker quip ── */
+.quip-bar {
+  background: #0D0025;
+  border: 1px solid var(--neon-purple);
+  padding: 8px 14px;
+  font-family: 'Righteous', cursive;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--neon-purple);
+  text-shadow: 0 0 6px var(--neon-purple);
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(191,0,255,0.2);
+}
+
+/* ── Round 2: thumbs ── */
+.r2-header {
+  text-align: center;
+  margin: 0.5rem 0 1rem;
+}
+.r2-first-name {
+  font-family: 'Lilita One', cursive;
+  font-size: 36px;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 16px var(--neon-yellow), 0 0 32px rgba(255,230,0,0.3);
+  display: block;
+  margin-bottom: 4px;
+}
+.r2-instruction {
+  font-family: 'Righteous', cursive;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.combo-card {
+  background: var(--panel-bg);
+  border-top: 3px solid var(--bevel-light);
+  border-left: 3px solid var(--bevel-light);
+  border-bottom: 3px solid var(--bevel-dark);
+  border-right: 3px solid var(--bevel-dark);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.combo-full-name {
+  font-family: 'Lilita One', cursive;
+  font-size: 32px;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+.combo-first { color: var(--neon-pink); text-shadow: 0 0 10px rgba(255,45,155,0.5); }
+.combo-space { color: #fff; opacity: 0.3; }
+.combo-middle { color: var(--neon-cyan); text-shadow: 0 0 10px rgba(0,245,255,0.5); }
+.combo-surname {
+  font-family: 'Righteous', cursive;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.thumb-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 0.75rem;
+}
+.thumb-btn {
+  padding: 14px 8px;
+  font-family: 'Righteous', cursive;
+  font-size: 22px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.1s, filter 0.1s;
+  letter-spacing: 0.05em;
+}
+.thumb-btn:active { transform: scale(0.94); }
+.thumb-yes {
+  background: #001A00;
+  color: var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-green);
+  border-top: 3px solid var(--bevel-light);
+  border-left: 3px solid var(--bevel-light);
+  border-bottom: 3px solid var(--bevel-dark);
+  border-right: 3px solid var(--bevel-dark);
+  box-shadow: 0 0 15px rgba(57,255,20,0.2);
+}
+.thumb-yes:hover { filter: brightness(1.2); box-shadow: 0 0 25px rgba(57,255,20,0.4); }
+.thumb-no {
+  background: #1A0000;
+  color: #FF4444;
+  text-shadow: 0 0 10px #FF4444;
+  border-top: 3px solid var(--bevel-light);
+  border-left: 3px solid var(--bevel-light);
+  border-bottom: 3px solid var(--bevel-dark);
+  border-right: 3px solid var(--bevel-dark);
+  box-shadow: 0 0 15px rgba(255,68,68,0.2);
+}
+.thumb-no:hover { filter: brightness(1.2); box-shadow: 0 0 25px rgba(255,68,68,0.35); }
+
+.r2-progress-text {
+  font-family: 'Righteous', cursive;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* ── Transition screen ── */
+.transition-screen { text-align: center; padding: 2rem 0; }
+.transition-big {
+  font-family: 'Lilita One', cursive;
+  font-size: 52px;
+  background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan), var(--neon-purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 12px rgba(0,245,255,0.4));
+  margin-bottom: 8px;
+}
+.transition-name {
+  font-family: 'Lilita One', cursive;
+  font-size: 44px;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 20px var(--neon-yellow), 0 0 40px rgba(255,230,0,0.3);
+  display: block;
+  margin-bottom: 1rem;
+}
+.transition-sub {
+  font-family: 'Righteous', cursive;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+.action-btn {
+  display: inline-block;
+  font-family: 'Righteous', cursive;
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 14px 30px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.1s, filter 0.1s;
+  margin: 0.4rem;
+}
+.action-btn:active { transform: scale(0.96); }
+.btn-yes-action {
+  background: var(--neon-green);
+  color: #000;
+  border-top: 3px solid rgba(255,255,255,0.5);
+  border-left: 3px solid rgba(255,255,255,0.5);
+  border-bottom: 3px solid rgba(0,0,0,0.5);
+  border-right: 3px solid rgba(0,0,0,0.5);
+  box-shadow: 0 0 20px rgba(57,255,20,0.4);
+}
+.btn-yes-action:hover { filter: brightness(1.1); box-shadow: 0 0 30px rgba(57,255,20,0.6); }
+.btn-no-action {
+  background: var(--panel-bg);
+  color: var(--text-dim);
+  border-top: 3px solid var(--bevel-light);
+  border-left: 3px solid var(--bevel-light);
+  border-bottom: 3px solid var(--bevel-dark);
+  border-right: 3px solid var(--bevel-dark);
+}
+.btn-no-action:hover { color: #fff; }
+
+/* ── Final results ── */
+.results-screen { padding-top: 0.5rem; }
+
+.results-r1 { margin-bottom: 2rem; }
+.results-section-title {
+  font-family: 'Righteous', cursive;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--neon-orange);
+  text-shadow: 0 0 6px var(--neon-orange);
+  border-bottom: 1px solid rgba(255,106,0,0.3);
+  padding-bottom: 6px;
+  margin-bottom: 1rem;
+}
+
+.r1-tier { margin-bottom: 1rem; }
+.r1-tier-label {
+  font-family: 'Righteous', cursive;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.r1-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.r1-pill {
+  font-family: 'Lilita One', cursive;
+  font-size: 16px;
+  padding: 6px 16px;
+  letter-spacing: 0.04em;
+}
+.pill-champ {
+  background: #000;
+  color: var(--neon-yellow);
+  border: 2px solid var(--neon-yellow);
+  box-shadow: 0 0 12px rgba(255,230,0,0.4), inset 0 0 8px rgba(255,230,0,0.05);
+  text-shadow: 0 0 8px var(--neon-yellow);
+  animation: champ-glow 2s ease-in-out infinite;
+}
+@keyframes champ-glow { 0%,100%{box-shadow:0 0 12px rgba(255,230,0,0.4)} 50%{box-shadow:0 0 24px rgba(255,230,0,0.7)} }
+.pill-finalist { background:#0A0020; color:var(--neon-purple); border:1px solid var(--neon-purple); text-shadow:0 0 6px var(--neon-purple); }
+.pill-semi { background:#0A0020; color:var(--neon-cyan); border:1px solid var(--neon-cyan); text-shadow:0 0 6px var(--neon-cyan); }
+.pill-quarter { background:#0A0020; color:var(--text-dim); border:1px solid rgba(170,136,204,0.3); }
+
+.r2-results { }
+.r2-first-block { margin-bottom: 1.5rem; }
+.r2-block-name {
+  font-family: 'Lilita One', cursive;
+  font-size: 22px;
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px rgba(255,45,155,0.4);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.r2-block-name::after { content:''; flex:1; height:1px; background:rgba(255,45,155,0.2); }
+.combo-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.combo-pill {
+  font-family: 'Varela Round', sans-serif;
+  font-size: 14px;
+  padding: 5px 14px;
+  background: #0A001A;
+  border: 1px solid rgba(0,245,255,0.3);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 6px rgba(0,245,255,0.4);
+}
+.no-combos {
+  font-family: 'Righteous', cursive;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  padding: 6px 0;
+  opacity: 0.6;
+}
+
+.restart-wrap { text-align: center; margin-top: 2rem; }
+.restart-big {
+  background: var(--neon-pink);
+  color: #000;
+  font-family: 'Righteous', cursive;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  cursor: pointer;
+  border-top: 3px solid rgba(255,255,255,0.5);
+  border-left: 3px solid rgba(255,255,255,0.5);
+  border-bottom: 3px solid rgba(0,0,0,0.4);
+  border-right: 3px solid rgba(0,0,0,0.4);
+  box-shadow: 0 0 20px rgba(255,45,155,0.4);
+  transition: filter 0.15s;
+}
+.restart-big:hover { filter: brightness(1.15); box-shadow: 0 0 30px rgba(255,45,155,0.6); }
+
+/* ── Pop-in animation ── */
+@keyframes pop-in { 0%{transform:scale(0.85);opacity:0} 75%{transform:scale(1.03)} 100%{transform:scale(1);opacity:1} }
+.pop { animation: pop-in 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* ── Scanlines overlay ── */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none;
+  z-index: 99;
+}
+</style>
+</head>
+<body>
+<div class="scanlines"></div>
+
+<div class="app">
+  <div class="main-header">
+    <div class="logo-text">👶 BABY NAME ZONE 👶</div>
+    <div class="logo-sub">⚡ Morton Family Tournament ⚡</div>
+  </div>
+  <div id="app-root"></div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────
+const jacky1 = new Set(["Adelaide","Adele","Alexandra","Alexis","Alix","Amelia","Amy","April","Audrey","Avery","Beatrice","Beatrix","Brie","Briony","Cecilia","Celia","Chloe","Clover","Daisy","Daphne","Dorothy","Elaine","Eleanor","Eliza","Elizabeth","Elsie","Elsbeth","Elspeth","Emily","Esther","Evelyn","Felicity","Fern","Florence","Frances","Francesca","Georgia","Georgina","Hope","Ida","Imogen","Ingrid","Isabel","Josephine","June","Kit","Leah","Leslie","Lily","Lisa","Lucy","Lydia","Lyra","Mabel","Madeline","Maeve","Maggie","Maisie","Marilyn","Maxine","May","Merrin","Millicent","Miriam","Molly","Myra","Olive","Olivia","Penelope","Phoebe","Rebecca","Robin","Rose","Rosemary","Ruby","Sabrina","Sophia","Sophie","Sylvia","Teresa","Tessa","Tess","Thea","Vera","Victoria","Viola","Wren","Zara","Zelda","Zoe"]);
+const jacky2 = new Set(["Alice","Grace","Hazel","Iris","Ivy","Joy","Mae","Meredith","Violet"]);
+const jackyDown = new Set(["Alicia","Alison","Alma","Althea","Alyssa","Amanda","Amara","Amber","Anastasia","Andrea","Angela","Angelica","Anita","Ann","Anna","Annabel","Anne","Annette","Antonia","Arabella","Aria","Ariadne","Ariana","Ariel","Ashley","Astrid","Athena","Aubrey","Augusta","Aurelia","Aurora","Autumn","Ava","Barbara","Bella","Bernadette","Beryl","Bethany","Betsy","Betty","Bianca","Billie","Blair","Blake","Blanche","Blythe","Bonnie","Brenda","Brianna","Bridget","Briar","Brooke","Brynn","Caitlin","Callie","Camilla","Camille","Candace","Cara","Carly","Carmen","Caroline","Carolyn","Casey","Cassandra","Cassidy","Catherine","Celeste","Celine","Charlotte","Chelsea","Christina","Christine","Ciara","Claire","Clara","Clarissa","Claudia","Clementine","Colette","Colleen","Constance","Cora","Coralie","Cordelia","Corinne","Cornelia","Cosima","Courtney","Cynthia","Dahlia","Dana","Danielle","Daria","Davina","Dawn","Deborah","Delia","Delilah","Denise","Desiree","Diana","Diane","Dinah","Dolores","Dominique","Donna","Dora","Drusilla","Eden","Edith","Edna","Eileen","Elena","Elisa","Elise","Ella","Ellen","Eloise","Elsa","Emelia","Emery","Emilia","Emma","Enid","Erica","Erin","Esme","Esmeralda","Estelle","Etta","Eudora","Eugenia","Eunice","Euphemia","Eva","Evangeline","Eve","Faith","Faye","Fiona","Flora","Francine","Freya","Frida","Gabriella","Gabrielle","Gemma","Genevieve","Georgiana","Geraldine","Germaine","Gertrude","Gillian","Gina","Giselle","Gladys","Glenda","Gloria","Greta","Gretchen","Gwendolyn","Gwyneth","Hailey","Halle","Hallie","Harriet","Heather","Heidi","Helen","Helena","Henrietta","Hermione","Hester","Hilary","Hillary","Hilda","Holly","Honora","Irene","Isadora","Isla","Jacqueline","Jade","Jane","Janet","Janice","Jean","Jeanette","Jemima","Jenna","Jennifer","Jessica","Jill","Joan","Joanna","Jocelyn","Jodi","Judith","Julia","Juliana","Julianne","Juliet","Juno","Justine","Kara","Karen","Karina","Kate","Katherine","Kathleen","Katrina","Kay","Kayla","Kelly","Kendra","Kerry","Kiara","Kira","Kirsten","Lana","Lara","Laura","Laurel","Lauren","Lavinia","Layla","Leanne","Lena","Leonora","Letitia","Lillian","Lina","Linda","Lindsay","Lois","Lola","Lorelei","Lorena","Loretta","Lori","Lorraine","Louisa","Louise","Lucia","Lucille","Lucinda","Lyla","Lynn","Magdalena","Mallory","Mandy","Mara","Marceline","Marcella","Margaret","Margot","Maria","Mariah","Marian","Marianne","Marie","Marina","Marion","Marjorie","Marlene","Martha","Mary","Matilda","Maude","Maureen","Maya","Megan","Melanie","Melinda","Melissa","Melody","Michelle","Mildred","Mina","Miranda","Moira","Mona","Monica","Morgan","Muriel","Nadia","Nadine","Nancy","Naomi","Natalie","Natasha","Nell","Nicola","Nicole","Nina","Noelle","Nora","Norma","Octavia","Odette","Oona","Opal","Ophelia","Paige","Pamela","Patricia","Paula","Pauline","Pearl","Petra","Philippa","Philomena","Phyllis","Polly","Portia","Priscilla","Prudence","Rachel","Ramona","Regina","Renata","Renee","Rhea","Rhoda","Rita","Roberta","Rosa","Rosalind","Rosamund","Rowena","Roxanne","Ruth","Sabina","Sally","Samantha","Sandra","Sarah","Sasha","Scarlett","Selena","Serena","Shannon","Sharon","Sheila","Shirley","Sibyl","Silvia","Simone","Sonia","Stacy","Stella","Stephanie","Summer","Susan","Susanna","Tabitha","Tamara","Tanya","Tara","Tatiana","Theodora","Theresa","Thomasina","Thora","Tiffany","Tina","Tracy","Una","Ursula","Valerie","Vanessa","Verity","Veronica","Virginia","Vivian","Wallis","Wanda","Wendy","Whitney","Wilhelmina","Willa","Winifred","Wynne","Xanthe","Xenia","Yasmin","Yolanda","Yvette","Yvonne","Zinnia","Zola"]);
+const david1 = new Set(["Adelaide","Adele","Agatha","Alexandra","Alexis","Alice","Amber","Amelia","April","Avery","Beatrice","Bridget","Casey","Cecilia","Celia","Chelsea","Chloe","Clara","Cynthia","Daphne","Edith","Elena","Eliza","Elizabeth","Elsa","Elsbeth","Elspeth","Florence","Gabriella","Genevieve","Grace","Imogen","Joanna","Jocelyn","Josephine","Julia","Juliet","Kelly","Leah","Leslie","Lyra","Mabel","Margot","Matilda","Meredith","Olivia","Penelope","Phoebe","Regina","Rosa","Rosalind","Rose","Rosemary","Sabrina","Sibyl","Silvia","Sophia","Sophie","Sylvia","Tabitha","Tessa","Tess","Thea","Theresa","Viola","Violet","Virginia","Winifred","Zelda","Zoe"]);
+const david2 = new Set(["Abigail","Alix","Beatrix","Charlotte","Dorothy","Elaine","Eleanor","Emily","Evelyn","Felicity","Judith","Lucy","Teresa","Victoria","Vivian"]);
+
+const displayName = n => n === "Elizabeth" ? "Elizabeth (Bess)" : n;
+
+function getScore(name) {
+  const j = jacky2.has(name) ? 2 : jacky1.has(name) ? 1 : jackyDown.has(name) ? -1 : 0;
+  const d = david2.has(name) ? 2 : david1.has(name) ? 1 : -1;
+  if (j <= 0 || d <= 0) return null;
+  return j + d;
+}
+
+const allNamesSet = new Set([...jacky1, ...jacky2, ...david1, ...david2]);
+const eligible = [];
+allNamesSet.forEach(n => { const s = getScore(n); if (s !== null) eligible.push({ name: n, score: s }); });
+// All 46 approved names for middle name pool
+const middleNamePool = eligible.map(e => e.name);
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+// ── Bracket logic ─────────────────────────────────────────────────────────
+function buildSeeds() {
+  const r = shuffle(eligible);
+  let p = 1; while (p < r.length) p *= 2;
+  const s = [...r]; while (s.length < p) s.push(null);
+  return s;
+}
+function buildMatchups(seeds) {
+  const n = seeds.length, m = [];
+  for (let i = 0; i < n / 2; i++) m.push([seeds[i], seeds[n - 1 - i]]);
+  return m;
+}
+function getRoundName(roundIdx, totalActive) {
+  const rem = totalActive / Math.pow(2, roundIdx);
+  if (rem <= 2) return '⚡ THE GRAND FINAL ⚡';
+  if (rem <= 4) return '🔥 SEMIFINALS 🔥';
+  if (rem <= 8) return '⭐ QUARTERFINALS ⭐';
+  return '🎮 ROUND OF ' + Math.round(rem) + ' 🎮';
+}
+const quips = ["MAKE YOUR MOVE!","THIS IS HUGE!","NO WRONG ANSWERS... MAYBE","GO WITH YOUR HEART","THE CROWD GOES WILD","VERY IMPORTANT BUSINESS","PICKING NAMES LIKE A BOSS","STAY GNARLY","TRUST THE PROCESS","YOUR GUT KNOWS","RADICAL CHOICES ONLY","THIS ONE'S TOUGH HUH","STATISTICAL SIGNIFICANCE: MAXIMUM"];
+
+// ── App state ─────────────────────────────────────────────────────────────
+const S = {
+  phase: 'r1',           // 'r1' | 'r1-transition' | 'r2' | 'results'
+  // Round 1
+  rounds: [], currentRound: 0, currentMatchup: 0, results: [], r1done: false,
+  // Round 1 results
+  champion: null, top4: [],
+  r1shortlist: { champion: null, finalists: [], semis: [], quarters: [] },
+  // Round 2
+  r2firstNameIdx: 0,     // which first name we're currently rating
+  r2middleIdx: 0,        // which middle name in the current pass
+  r2middleNames: [],     // middle name candidates for current first name
+  r2votes: {},           // { firstNameIdx: { middleName: bool } }
+};
+
+function initR1() {
+  const seeds = buildSeeds();
+  S.rounds = [buildMatchups(seeds)];
+  S.currentRound = 0; S.currentMatchup = 0;
+  S.results = [[[]]]; // results[round] = array of winners
+  S.results = [[]];
+  S.r1done = false;
+  S.phase = 'r1';
+}
+initR1();
+
+function skipByes() {
+  while (S.currentRound < S.rounds.length) {
+    const round = S.rounds[S.currentRound];
+    while (S.currentMatchup < round.length) {
+      const [a, b] = round[S.currentMatchup];
+      if (!a || !b) { S.results[S.currentRound].push(a || b); S.currentMatchup++; }
+      else break;
+    }
+    if (S.currentMatchup >= round.length) {
+      const w = S.results[S.currentRound];
+      if (w.length <= 1) { S.r1done = true; break; }
+      S.rounds.push(buildMatchups(w));
+      S.results.push([]); S.currentRound++; S.currentMatchup = 0;
+    } else break;
+  }
+}
+
+function pickR1(name) {
+  const round = S.rounds[S.currentRound];
+  const [a, b] = round[S.currentMatchup];
+  S.results[S.currentRound].push(a.name === name ? a : b);
+  S.currentMatchup++;
+  if (S.currentMatchup >= round.length) {
+    const w = S.results[S.currentRound];
+    if (w.length <= 1) {
+      finishR1(); return;
+    }
+    S.rounds.push(buildMatchups(w));
+    S.results.push([]); S.currentRound++; S.currentMatchup = 0;
+  }
+  skipByes(); render();
+}
+
+function finishR1() {
+  S.r1done = true;
+  // Extract shortlist tiers
+  const rlen = S.results.length;
+  S.r1shortlist.champion = S.results[rlen - 1]?.[0] || null;
+  S.r1shortlist.finalists = (S.results[rlen - 2] || []).filter(f => f && f.name !== S.r1shortlist.champion?.name);
+  S.r1shortlist.semis = (S.results[rlen - 3] || []).filter(Boolean);
+  S.r1shortlist.quarters = (S.results[rlen - 4] || []).filter(Boolean);
+
+  // Top 4: champion, finalist(s), semis — take first 4 distinct
+  const ordered = [
+    S.r1shortlist.champion,
+    ...S.r1shortlist.finalists,
+    ...S.r1shortlist.semis,
+    ...S.r1shortlist.quarters,
+  ].filter(Boolean);
+  const seen = new Set();
+  S.top4 = [];
+  for (const e of ordered) {
+    if (!seen.has(e.name)) { seen.add(e.name); S.top4.push(e); }
+    if (S.top4.length === 4) break;
+  }
+  S.champion = S.r1shortlist.champion;
+  S.phase = 'r1-transition';
+  render();
+}
+
+function skipMatchupR1() {
+  const round = S.rounds[S.currentRound];
+  const m = round.splice(S.currentMatchup, 1)[0];
+  round.push(m); render();
+}
+
+function pctR1() {
+  let done = 0, total = 0;
+  S.rounds.forEach((r, ri) => {
+    const real = r.filter(m => m[0] && m[1]).length;
+    total += real;
+    if (ri < S.currentRound) done += real;
+    else if (ri === S.currentRound) done += r.slice(0, S.currentMatchup).filter(m => m[0] && m[1]).length;
+  });
+  return total > 0 ? Math.round((done / total) * 100) : 0;
+}
+
+// ── Round 2 logic ─────────────────────────────────────────────────────────
+function startR2() {
+  S.phase = 'r2';
+  S.r2firstNameIdx = 0;
+  S.r2votes = {};
+  S.top4.forEach((_, i) => { S.r2votes[i] = {}; });
+  loadR2Pass();
+  render();
+}
+
+function loadR2Pass() {
+  const firstName = S.top4[S.r2firstNameIdx].name;
+  // All 46 approved names except the first name itself
+  S.r2middleNames = shuffle(middleNamePool.filter(n => n !== firstName));
+  S.r2middleIdx = 0;
+}
+
+function voteR2(yes) {
+  const midName = S.r2middleNames[S.r2middleIdx];
+  S.r2votes[S.r2firstNameIdx][midName] = yes;
+  S.r2middleIdx++;
+  if (S.r2middleIdx >= S.r2middleNames.length) {
+    // Move to next first name
+    S.r2firstNameIdx++;
+    if (S.r2firstNameIdx >= S.top4.length) {
+      S.phase = 'results';
+      render(); return;
+    }
+    loadR2Pass();
+  }
+  render();
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function render() {
+  const root = document.getElementById('app-root');
+  skipByes();
+
+  if (S.phase === 'r1') { renderR1(root); return; }
+  if (S.phase === 'r1-transition') { renderTransition(root); return; }
+  if (S.phase === 'r2') { renderR2(root); return; }
+  if (S.phase === 'results') { renderResults(root); return; }
+}
+
+function renderR1(root) {
+  const round = S.rounds[S.currentRound];
+  if (!round) return;
+  const [a, b] = round[S.currentMatchup];
+  if (!a || !b) { skipByes(); render(); return; }
+  const p = pctR1();
+  const totalActive = S.rounds[0].filter(m => m[0] || m[1]).length;
+  const rl = getRoundName(S.currentRound, totalActive);
+  const quip = quips[Math.floor(Math.random() * quips.length)];
+  const an = a.name.replace(/'/g, "\\'"), bn = b.name.replace(/'/g, "\\'");
+
+  root.innerHTML = `
+    <div class="progress-section">
+      <div class="progress-track"><div class="progress-bar" style="width:${p}%"></div></div>
+      <div class="progress-label">${p}% complete &nbsp;·&nbsp; ${eligible.length} names in the tournament</div>
+    </div>
+    <div class="round-announce"><span class="round-tag">${rl}</span></div>
+    <div class="bevel-panel pop">
+      <button class="neon-btn btn-top" onclick="pickR1('${an}')">
+        ${displayName(a.name)}
+      </button>
+      <div class="vs-label">— VS —</div>
+      <button class="neon-btn btn-bot" onclick="pickR1('${bn}')">
+        ${displayName(b.name)}
+      </button>
+    </div>
+    <div class="skip-wrap"><button class="skip-btn" onclick="skipMatchupR1()">⏭ too hard, decide later</button></div>
+    <div class="quip-bar">📼 &nbsp;${quip}&nbsp; 📼</div>
+    <div class="marquee-wrap"><span class="marquee-inner">⭐ WELCOME TO THE BABY NAME ZONE ⭐ TOTALLY RADICAL NAME SELECTION IN PROGRESS ⭐ DO NOT TURN OFF YOUR COMPUTER ⭐ NAMES ARE LOADING ⭐ STAY FRESH ⭐ PICK YOUR FAVES ⭐ MORTON FAMILY NAME TOURNAMENT ⭐ RADICAL ⭐ TUBULAR ⭐ GNARLY ⭐</span></div>
+  `;
+}
+
+function renderTransition(root) {
+  const cname = displayName(S.champion?.name || '');
+  const top4list = S.top4.map(e => `<strong style="color:var(--neon-cyan)">${displayName(e.name)}</strong>`).join(', ');
+  root.innerHTML = `
+    <div class="transition-screen pop">
+      <div class="transition-big">🏆 WINNER! 🏆</div>
+      <span class="transition-name">${cname}</span>
+      <div class="transition-sub">
+        YOUR TOP 4 NAMES:<br>${top4list}<br><br>
+        READY TO PICK MIDDLE NAMES?<br>
+        WE'LL TEST EVERY COMBO ONE BY ONE.
+      </div>
+      <button class="action-btn btn-yes-action" onclick="startR2()">🎮 YES, LET'S GO!</button>
+      <button class="action-btn btn-no-action" onclick="goResults()">🏁 SKIP TO RESULTS</button>
+    </div>
+  `;
+}
+
+function goResults() { S.phase = 'results'; render(); }
+
+function renderR2(root) {
+  const firstName = S.top4[S.r2firstNameIdx];
+  const midName = S.r2middleNames[S.r2middleIdx];
+  const total = S.r2middleNames.length;
+  const done = S.r2middleIdx;
+  const p = Math.round((done / total) * 100);
+  const fn = displayName(firstName.name);
+  const mn = displayName(midName);
+  const passNum = S.r2firstNameIdx + 1;
+  const mne = midName.replace(/'/g, "\\'");
+
+  root.innerHTML = `
+    <div class="progress-section">
+      <div class="progress-track"><div class="progress-bar" style="width:${p}%"></div></div>
+      <div class="progress-label">PASS ${passNum} OF ${S.top4.length} &nbsp;·&nbsp; ${done} / ${total} combos rated</div>
+    </div>
+    <div class="r2-header">
+      <span class="r2-instruction">First name locked in →</span>
+      <span class="r2-first-name">${fn}</span>
+      <span class="r2-instruction">Does this middle name work?</span>
+    </div>
+    <div class="combo-card pop">
+      <div class="combo-full-name">
+        <span class="combo-first">${fn}</span>
+        <span class="combo-space"> </span>
+        <span class="combo-middle">${mn}</span>
+      </div>
+      <div class="combo-surname">Morton</div>
+    </div>
+    <div class="thumb-row">
+      <button class="thumb-btn thumb-yes" onclick="voteR2(true)">👍 YES</button>
+      <button class="thumb-btn thumb-no" onclick="voteR2(false)">👎 NOPE</button>
+    </div>
+    <div class="r2-progress-text">${total - done} combos remaining this pass</div>
+  `;
+}
+
+function renderResults(root) {
+  const sl = S.r1shortlist;
+  const cname = sl.champion ? displayName(sl.champion.name) : '—';
+
+  // R1 tiers
+  const r1HTML = `
+    <div class="results-r1">
+      <div class="results-section-title">⭐ Round 1 — Name Bracket Results</div>
+      ${sl.champion ? `<div class="r1-tier"><div class="r1-tier-label">👑 Champion</div><div class="r1-pills"><span class="r1-pill pill-champ">${displayName(sl.champion.name)}</span></div></div>` : ''}
+      ${sl.finalists.length ? `<div class="r1-tier"><div class="r1-tier-label">🥈 Finalists</div><div class="r1-pills">${sl.finalists.map(f=>`<span class="r1-pill pill-finalist">${displayName(f.name)}</span>`).join('')}</div></div>` : ''}
+      ${sl.semis.length ? `<div class="r1-tier"><div class="r1-tier-label">⚡ Semifinalists</div><div class="r1-pills">${sl.semis.map(f=>`<span class="r1-pill pill-semi">${displayName(f.name)}</span>`).join('')}</div></div>` : ''}
+      ${sl.quarters.length ? `<div class="r1-tier"><div class="r1-tier-label">🌟 Quarterfinalists</div><div class="r1-pills">${sl.quarters.map(f=>`<span class="r1-pill pill-quarter">${displayName(f.name)}</span>`).join('')}</div></div>` : ''}
+    </div>
+  `;
+
+  // R2 results
+  let r2HTML = '';
+  const hasR2 = Object.keys(S.r2votes).length > 0 && S.top4.length > 0;
+  if (hasR2) {
+    r2HTML = `<div class="r2-results"><div class="results-section-title">💿 Round 2 — Middle Name Combos You Liked</div>`;
+    S.top4.forEach((fn, i) => {
+      const votes = S.r2votes[i] || {};
+      const yeses = Object.entries(votes).filter(([,v]) => v).map(([n]) => n);
+      r2HTML += `
+        <div class="r2-first-block">
+          <div class="r2-block-name">${displayName(fn.name)}</div>
+          ${yeses.length > 0
+            ? `<div class="combo-pills">${yeses.map(n => `<span class="combo-pill">${displayName(fn.name)} <strong>${displayName(n)}</strong></span>`).join('')}</div>`
+            : `<div class="no-combos">No combos thumbs-up'd for this name</div>`
+          }
+        </div>
+      `;
+    });
+    r2HTML += `</div>`;
+  }
+
+  root.innerHTML = `
+    <div class="results-screen pop">
+      <div class="main-header" style="margin-bottom:1rem;">
+        <div class="logo-text" style="font-size:28px">🎉 ALL DONE! 🎉</div>
+        <div class="logo-sub">Here's everything you picked</div>
+      </div>
+      ${r1HTML}
+      ${r2HTML}
+      <div class="restart-wrap">
+        <button class="restart-big" onclick="fullRestart()">🎲 SHUFFLE & START OVER</button>
+      </div>
+    </div>
+  `;
+}
+
+function fullRestart() {
+  Object.assign(S, {
+    phase:'r1', rounds:[], currentRound:0, currentMatchup:0, results:[],
+    r1done:false, champion:null, top4:[],
+    r1shortlist:{champion:null,finalists:[],semis:[],quarters:[]},
+    r2firstNameIdx:0, r2middleIdx:0, r2middleNames:[], r2votes:{}
+  });
+  initR1();
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
