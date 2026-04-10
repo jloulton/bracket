@@ -545,6 +545,28 @@ body::after {
 }
 .restart-big:hover { filter: brightness(1.15); box-shadow: 0 0 30px rgba(255,45,155,0.6); }
 
+/* ── Export button ── */
+.export-wrap { text-align: center; margin: 1rem 0 0.5rem; }
+.export-btn {
+  background: var(--panel-bg);
+  color: var(--neon-yellow);
+  font-family: 'Righteous', cursive;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  cursor: pointer;
+  border: 2px solid var(--neon-yellow);
+  box-shadow: 0 0 10px rgba(255,230,0,0.2);
+  transition: filter 0.15s, box-shadow 0.15s;
+}
+.export-btn:hover { filter: brightness(1.2); box-shadow: 0 0 18px rgba(255,230,0,0.45); }
+.export-btn.copied {
+  color: var(--neon-green);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 14px rgba(57,255,20,0.4);
+}
+
 /* ── Pop-in animation ── */
 @keyframes pop-in { 0%{transform:scale(0.85);opacity:0} 75%{transform:scale(1.03)} 100%{transform:scale(1);opacity:1} }
 .pop { animation: pop-in 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
@@ -813,6 +835,7 @@ function renderTransition(root) {
       </div>
       <button class="action-btn btn-yes-action" onclick="startR2()">🎮 YES, LET'S GO!</button>
       <button class="action-btn btn-no-action" onclick="goResults()">🏁 SKIP TO RESULTS</button>
+      <div class="export-wrap"><button class="export-btn" id="exp-r1" onclick="copyR1Results('exp-r1')">📋 EXPORT FIRST NAME RESULTS</button></div>
     </div>
   `;
 }
@@ -900,6 +923,8 @@ function renderResults(root) {
       </div>
       ${r1HTML}
       ${r2HTML}
+      <div class="export-wrap"><button class="export-btn" id="exp-r1b" onclick="copyR1Results('exp-r1b')">📋 EXPORT FIRST NAME RESULTS</button></div>
+      ${hasR2 ? `<div class="export-wrap"><button class="export-btn" id="exp-r2" onclick="copyR2Results('exp-r2')">📋 EXPORT COMBOS</button></div>` : ''}
       <div class="restart-wrap">
         <button class="restart-big" onclick="fullRestart()">🎲 SHUFFLE & START OVER</button>
       </div>
@@ -916,6 +941,67 @@ function fullRestart() {
   });
   initR1();
   render();
+}
+
+function copyToClipboard(text, btnId, resetLabel) {
+  const btn = document.getElementById(btnId);
+  function onSuccess() {
+    if (btn) { btn.textContent = '✅ COPIED!'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = resetLabel; btn.classList.remove('copied'); }, 2000); }
+  }
+  function onFail() {
+    if (btn) { btn.textContent = '⚠️ COPY FAILED'; setTimeout(() => { btn.textContent = resetLabel; }, 2000); }
+  }
+  // Try modern clipboard API first
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(onSuccess).catch(() => {
+      // Fall back to execCommand
+      execCommandCopy(text) ? onSuccess() : onFail();
+    });
+  } else {
+    execCommandCopy(text) ? onSuccess() : onFail();
+  }
+}
+
+function execCommandCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch(e) { ok = false; }
+  document.body.removeChild(ta);
+  return ok;
+}
+
+function copyR1Results(btnId) {
+  const sl = S.r1shortlist;
+  const rows = [['Name', 'Rank']];
+  if (sl.champion) rows.push([displayName(sl.champion.name), 'Champion']);
+  sl.finalists.forEach(f => rows.push([displayName(f.name), 'Finalist']));
+  sl.semis.forEach(f => rows.push([displayName(f.name), 'Semifinalist']));
+  sl.quarters.forEach(f => rows.push([displayName(f.name), 'Quarterfinalist']));
+  const tsv = rows.map(r => r.join('\t')).join('\n');
+  copyToClipboard(tsv, btnId, '📋 EXPORT FIRST NAME RESULTS');
+}
+
+function copyR2Results(btnId) {
+  const rankLabels = ['Champion', 'Finalist', 'Semifinalist', 'Quarterfinalist'];
+  const rows = [['Rank', 'First Name', 'Middle Name']];
+  S.top4.forEach((fn, i) => {
+    const votes = S.r2votes[i] || {};
+    const yeses = Object.entries(votes).filter(([,v]) => v).map(([n]) => n);
+    const rank = rankLabels[i] || `#${i + 1}`;
+    yeses.forEach(mid => rows.push([rank, displayName(fn.name), displayName(mid)]));
+  });
+  if (rows.length === 1) {
+    const btn = document.getElementById(btnId);
+    if (btn) { btn.textContent = '⚠️ NO THUMBS-UP COMBOS'; setTimeout(() => { btn.textContent = '📋 EXPORT COMBOS'; }, 2000); }
+    return;
+  }
+  const tsv = rows.map(r => r.join('\t')).join('\n');
+  copyToClipboard(tsv, btnId, '📋 EXPORT COMBOS');
 }
 
 render();
