@@ -593,7 +593,6 @@ body::after {
 </div>
 
 <script>
-// ── Data ──────────────────────────────────────────────────────────────────
 const jacky1 = new Set(["Adelaide","Adele","Alexandra","Alexis","Alix","Amelia","Amy","April","Audrey","Avery","Beatrice","Beatrix","Brie","Briony","Cecilia","Celia","Chloe","Clover","Daisy","Daphne","Dorothy","Elaine","Eleanor","Eliza","Elizabeth","Elsie","Elsbeth","Elspeth","Emily","Esther","Evelyn","Felicity","Fern","Florence","Frances","Francesca","Georgia","Georgina","Hope","Ida","Imogen","Ingrid","Isabel","Josephine","June","Kit","Leah","Leslie","Lily","Lisa","Lucy","Lydia","Lyra","Mabel","Madeline","Maeve","Maggie","Maisie","Marilyn","Maxine","May","Merrin","Millicent","Miriam","Molly","Myra","Olive","Olivia","Penelope","Phoebe","Rebecca","Robin","Rose","Rosemary","Ruby","Sabrina","Sophia","Sophie","Sylvia","Teresa","Tessa","Tess","Thea","Vera","Victoria","Viola","Wren","Zara","Zelda","Zoe"]);
 const jacky2 = new Set(["Alice","Grace","Hazel","Iris","Ivy","Joy","Mae","Meredith","Violet"]);
 const jackyDown = new Set(["Alicia","Alison","Alma","Althea","Alyssa","Amanda","Amara","Amber","Anastasia","Andrea","Angela","Angelica","Anita","Ann","Anna","Annabel","Anne","Annette","Antonia","Arabella","Aria","Ariadne","Ariana","Ariel","Ashley","Astrid","Athena","Aubrey","Augusta","Aurelia","Aurora","Autumn","Ava","Barbara","Bella","Bernadette","Beryl","Bethany","Betsy","Betty","Bianca","Billie","Blair","Blake","Blanche","Blythe","Bonnie","Brenda","Brianna","Bridget","Briar","Brooke","Brynn","Caitlin","Callie","Camilla","Camille","Candace","Cara","Carly","Carmen","Caroline","Carolyn","Casey","Cassandra","Cassidy","Catherine","Celeste","Celine","Charlotte","Chelsea","Christina","Christine","Ciara","Claire","Clara","Clarissa","Claudia","Clementine","Colette","Colleen","Constance","Cora","Coralie","Cordelia","Corinne","Cornelia","Cosima","Courtney","Cynthia","Dahlia","Dana","Danielle","Daria","Davina","Dawn","Deborah","Delia","Delilah","Denise","Desiree","Diana","Diane","Dinah","Dolores","Dominique","Donna","Dora","Drusilla","Eden","Edith","Edna","Eileen","Elena","Elisa","Elise","Ella","Ellen","Eloise","Elsa","Emelia","Emery","Emilia","Emma","Enid","Erica","Erin","Esme","Esmeralda","Estelle","Etta","Eudora","Eugenia","Eunice","Euphemia","Eva","Evangeline","Eve","Faith","Faye","Fiona","Flora","Francine","Freya","Frida","Gabriella","Gabrielle","Gemma","Genevieve","Georgiana","Geraldine","Germaine","Gertrude","Gillian","Gina","Giselle","Gladys","Glenda","Gloria","Greta","Gretchen","Gwendolyn","Gwyneth","Hailey","Halle","Hallie","Harriet","Heather","Heidi","Helen","Helena","Henrietta","Hermione","Hester","Hilary","Hillary","Hilda","Holly","Honora","Irene","Isadora","Isla","Jacqueline","Jade","Jane","Janet","Janice","Jean","Jeanette","Jemima","Jenna","Jennifer","Jessica","Jill","Joan","Joanna","Jocelyn","Jodi","Judith","Julia","Juliana","Julianne","Juliet","Juno","Justine","Kara","Karen","Karina","Kate","Katherine","Kathleen","Katrina","Kay","Kayla","Kelly","Kendra","Kerry","Kiara","Kira","Kirsten","Lana","Lara","Laura","Laurel","Lauren","Lavinia","Layla","Leanne","Lena","Leonora","Letitia","Lillian","Lina","Linda","Lindsay","Lois","Lola","Lorelei","Lorena","Loretta","Lori","Lorraine","Louisa","Louise","Lucia","Lucille","Lucinda","Lyla","Lynn","Magdalena","Mallory","Mandy","Mara","Marceline","Marcella","Margaret","Margot","Maria","Mariah","Marian","Marianne","Marie","Marina","Marion","Marjorie","Marlene","Martha","Mary","Matilda","Maude","Maureen","Maya","Megan","Melanie","Melinda","Melissa","Melody","Michelle","Mildred","Mina","Miranda","Moira","Mona","Monica","Morgan","Muriel","Nadia","Nadine","Nancy","Naomi","Natalie","Natasha","Nell","Nicola","Nicole","Nina","Noelle","Nora","Norma","Octavia","Odette","Oona","Opal","Ophelia","Paige","Pamela","Patricia","Paula","Pauline","Pearl","Petra","Philippa","Philomena","Phyllis","Polly","Portia","Priscilla","Prudence","Rachel","Ramona","Regina","Renata","Renee","Rhea","Rhoda","Rita","Roberta","Rosa","Rosalind","Rosamund","Rowena","Roxanne","Ruth","Sabina","Sally","Samantha","Sandra","Sarah","Sasha","Scarlett","Selena","Serena","Shannon","Sharon","Sheila","Shirley","Sibyl","Silvia","Simone","Sonia","Stacy","Stella","Stephanie","Summer","Susan","Susanna","Tabitha","Tamara","Tanya","Tara","Tatiana","Theodora","Theresa","Thomasina","Thora","Tiffany","Tina","Tracy","Una","Ursula","Valerie","Vanessa","Verity","Veronica","Virginia","Vivian","Wallis","Wanda","Wendy","Whitney","Wilhelmina","Willa","Winifred","Wynne","Xanthe","Xenia","Yasmin","Yolanda","Yvette","Yvonne","Zinnia","Zola"]);
@@ -609,10 +608,15 @@ function getScore(name) {
   return j + d;
 }
 
+// Names approved outside the thumbs up/down system — always included
+const overrideNames = ["Amber","Astrid","Aubrey","Audrey","Joy"];
+
 const allNamesSet = new Set([...jacky1, ...jacky2, ...david1, ...david2]);
 const eligible = [];
 allNamesSet.forEach(n => { const s = getScore(n); if (s !== null) eligible.push({ name: n, score: s }); });
-// All 46 approved names for middle name pool
+// Add override names if not already present, with a mid-range score of 2
+overrideNames.forEach(n => { if (!eligible.find(e => e.name === n)) eligible.push({ name: n, score: 2 }); });
+// All approved names for middle name pool
 const middleNamePool = eligible.map(e => e.name);
 
 function shuffle(arr) {
@@ -621,7 +625,6 @@ function shuffle(arr) {
   return a;
 }
 
-// ── Bracket logic ─────────────────────────────────────────────────────────
 function buildSeeds() {
   const r = shuffle(eligible);
   let p = 1; while (p < r.length) p *= 2;
@@ -642,26 +645,18 @@ function getRoundName(roundIdx, totalActive) {
 }
 const quips = ["MAKE YOUR MOVE!","THIS IS HUGE!","NO WRONG ANSWERS... MAYBE","GO WITH YOUR HEART","THE CROWD GOES WILD","VERY IMPORTANT BUSINESS","PICKING NAMES LIKE A BOSS","STAY GNARLY","TRUST THE PROCESS","YOUR GUT KNOWS","RADICAL CHOICES ONLY","THIS ONE'S TOUGH HUH","STATISTICAL SIGNIFICANCE: MAXIMUM"];
 
-// ── App state ─────────────────────────────────────────────────────────────
 const S = {
-  phase: 'r1',           // 'r1' | 'r1-transition' | 'r2' | 'results'
-  // Round 1
+  phase: 'r1',
   rounds: [], currentRound: 0, currentMatchup: 0, results: [], r1done: false,
-  // Round 1 results
   champion: null, top4: [],
   r1shortlist: { champion: null, finalists: [], semis: [], quarters: [] },
-  // Round 2
-  r2firstNameIdx: 0,     // which first name we're currently rating
-  r2middleIdx: 0,        // which middle name in the current pass
-  r2middleNames: [],     // middle name candidates for current first name
-  r2votes: {},           // { firstNameIdx: { middleName: bool } }
+  r2firstNameIdx: 0, r2middleIdx: 0, r2middleNames: [], r2votes: {},
 };
 
 function initR1() {
   const seeds = buildSeeds();
   S.rounds = [buildMatchups(seeds)];
   S.currentRound = 0; S.currentMatchup = 0;
-  S.results = [[[]]]; // results[round] = array of winners
   S.results = [[]];
   S.r1done = false;
   S.phase = 'r1';
@@ -692,9 +687,7 @@ function pickR1(name) {
   S.currentMatchup++;
   if (S.currentMatchup >= round.length) {
     const w = S.results[S.currentRound];
-    if (w.length <= 1) {
-      finishR1(); return;
-    }
+    if (w.length <= 1) { finishR1(); return; }
     S.rounds.push(buildMatchups(w));
     S.results.push([]); S.currentRound++; S.currentMatchup = 0;
   }
@@ -703,20 +696,12 @@ function pickR1(name) {
 
 function finishR1() {
   S.r1done = true;
-  // Extract shortlist tiers
   const rlen = S.results.length;
   S.r1shortlist.champion = S.results[rlen - 1]?.[0] || null;
   S.r1shortlist.finalists = (S.results[rlen - 2] || []).filter(f => f && f.name !== S.r1shortlist.champion?.name);
   S.r1shortlist.semis = (S.results[rlen - 3] || []).filter(Boolean);
   S.r1shortlist.quarters = (S.results[rlen - 4] || []).filter(Boolean);
-
-  // Top 4: champion, finalist(s), semis — take first 4 distinct
-  const ordered = [
-    S.r1shortlist.champion,
-    ...S.r1shortlist.finalists,
-    ...S.r1shortlist.semis,
-    ...S.r1shortlist.quarters,
-  ].filter(Boolean);
+  const ordered = [S.r1shortlist.champion, ...S.r1shortlist.finalists, ...S.r1shortlist.semis, ...S.r1shortlist.quarters].filter(Boolean);
   const seen = new Set();
   S.top4 = [];
   for (const e of ordered) {
@@ -745,7 +730,6 @@ function pctR1() {
   return total > 0 ? Math.round((done / total) * 100) : 0;
 }
 
-// ── Round 2 logic ─────────────────────────────────────────────────────────
 function startR2() {
   S.phase = 'r2';
   S.r2firstNameIdx = 0;
@@ -757,7 +741,6 @@ function startR2() {
 
 function loadR2Pass() {
   const firstName = S.top4[S.r2firstNameIdx].name;
-  // All 46 approved names except the first name itself
   S.r2middleNames = shuffle(middleNamePool.filter(n => n !== firstName));
   S.r2middleIdx = 0;
 }
@@ -767,22 +750,16 @@ function voteR2(yes) {
   S.r2votes[S.r2firstNameIdx][midName] = yes;
   S.r2middleIdx++;
   if (S.r2middleIdx >= S.r2middleNames.length) {
-    // Move to next first name
     S.r2firstNameIdx++;
-    if (S.r2firstNameIdx >= S.top4.length) {
-      S.phase = 'results';
-      render(); return;
-    }
+    if (S.r2firstNameIdx >= S.top4.length) { S.phase = 'results'; render(); return; }
     loadR2Pass();
   }
   render();
 }
 
-// ── Render ─────────────────────────────────────────────────────────────────
 function render() {
   const root = document.getElementById('app-root');
   skipByes();
-
   if (S.phase === 'r1') { renderR1(root); return; }
   if (S.phase === 'r1-transition') { renderTransition(root); return; }
   if (S.phase === 'r2') { renderR2(root); return; }
@@ -799,7 +776,6 @@ function renderR1(root) {
   const rl = getRoundName(S.currentRound, totalActive);
   const quip = quips[Math.floor(Math.random() * quips.length)];
   const an = a.name.replace(/'/g, "\\'"), bn = b.name.replace(/'/g, "\\'");
-
   root.innerHTML = `
     <div class="progress-section">
       <div class="progress-track"><div class="progress-bar" style="width:${p}%"></div></div>
@@ -807,13 +783,9 @@ function renderR1(root) {
     </div>
     <div class="round-announce"><span class="round-tag">${rl}</span></div>
     <div class="bevel-panel pop">
-      <button class="neon-btn btn-top" onclick="pickR1('${an}')">
-        ${displayName(a.name)}
-      </button>
+      <button class="neon-btn btn-top" onclick="pickR1('${an}')">${displayName(a.name)}</button>
       <div class="vs-label">— VS —</div>
-      <button class="neon-btn btn-bot" onclick="pickR1('${bn}')">
-        ${displayName(b.name)}
-      </button>
+      <button class="neon-btn btn-bot" onclick="pickR1('${bn}')">${displayName(b.name)}</button>
     </div>
     <div class="skip-wrap"><button class="skip-btn" onclick="skipMatchupR1()">⏭ too hard, decide later</button></div>
     <div class="quip-bar">📼 &nbsp;${quip}&nbsp; 📼</div>
@@ -828,11 +800,7 @@ function renderTransition(root) {
     <div class="transition-screen pop">
       <div class="transition-big">🏆 WINNER! 🏆</div>
       <span class="transition-name">${cname}</span>
-      <div class="transition-sub">
-        YOUR TOP 4 NAMES:<br>${top4list}<br><br>
-        READY TO PICK MIDDLE NAMES?<br>
-        WE'LL TEST EVERY COMBO ONE BY ONE.
-      </div>
+      <div class="transition-sub">YOUR TOP 4 NAMES:<br>${top4list}<br><br>READY TO PICK MIDDLE NAMES?<br>WE'LL TEST EVERY COMBO ONE BY ONE.</div>
       <button class="action-btn btn-yes-action" onclick="startR2()">🎮 YES, LET'S GO!</button>
       <button class="action-btn btn-no-action" onclick="goResults()">🏁 SKIP TO RESULTS</button>
       <div class="export-wrap"><button class="export-btn" id="exp-r1" onclick="copyR1Results('exp-r1')">📋 EXPORT FIRST NAME RESULTS</button></div>
@@ -851,8 +819,6 @@ function renderR2(root) {
   const fn = displayName(firstName.name);
   const mn = displayName(midName);
   const passNum = S.r2firstNameIdx + 1;
-  const mne = midName.replace(/'/g, "\\'");
-
   root.innerHTML = `
     <div class="progress-section">
       <div class="progress-track"><div class="progress-bar" style="width:${p}%"></div></div>
@@ -881,9 +847,6 @@ function renderR2(root) {
 
 function renderResults(root) {
   const sl = S.r1shortlist;
-  const cname = sl.champion ? displayName(sl.champion.name) : '—';
-
-  // R1 tiers
   const r1HTML = `
     <div class="results-r1">
       <div class="results-section-title">⭐ Round 1 — Name Bracket Results</div>
@@ -893,8 +856,6 @@ function renderResults(root) {
       ${sl.quarters.length ? `<div class="r1-tier"><div class="r1-tier-label">🌟 Quarterfinalists</div><div class="r1-pills">${sl.quarters.map(f=>`<span class="r1-pill pill-quarter">${displayName(f.name)}</span>`).join('')}</div></div>` : ''}
     </div>
   `;
-
-  // R2 results
   let r2HTML = '';
   const hasR2 = Object.keys(S.r2votes).length > 0 && S.top4.length > 0;
   if (hasR2) {
@@ -902,19 +863,10 @@ function renderResults(root) {
     S.top4.forEach((fn, i) => {
       const votes = S.r2votes[i] || {};
       const yeses = Object.entries(votes).filter(([,v]) => v).map(([n]) => n);
-      r2HTML += `
-        <div class="r2-first-block">
-          <div class="r2-block-name">${displayName(fn.name)}</div>
-          ${yeses.length > 0
-            ? `<div class="combo-pills">${yeses.map(n => `<span class="combo-pill">${displayName(fn.name)} <strong>${displayName(n)}</strong></span>`).join('')}</div>`
-            : `<div class="no-combos">No combos thumbs-up'd for this name</div>`
-          }
-        </div>
-      `;
+      r2HTML += `<div class="r2-first-block"><div class="r2-block-name">${displayName(fn.name)}</div>${yeses.length > 0 ? `<div class="combo-pills">${yeses.map(n=>`<span class="combo-pill">${displayName(fn.name)} <strong>${displayName(n)}</strong></span>`).join('')}</div>` : `<div class="no-combos">No combos thumbs-up'd for this name</div>`}</div>`;
     });
     r2HTML += `</div>`;
   }
-
   root.innerHTML = `
     <div class="results-screen pop">
       <div class="main-header" style="margin-bottom:1rem;">
@@ -951,12 +903,8 @@ function copyToClipboard(text, btnId, resetLabel) {
   function onFail() {
     if (btn) { btn.textContent = '⚠️ COPY FAILED'; setTimeout(() => { btn.textContent = resetLabel; }, 2000); }
   }
-  // Try modern clipboard API first
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(onSuccess).catch(() => {
-      // Fall back to execCommand
-      execCommandCopy(text) ? onSuccess() : onFail();
-    });
+    navigator.clipboard.writeText(text).then(onSuccess).catch(() => { execCommandCopy(text) ? onSuccess() : onFail(); });
   } else {
     execCommandCopy(text) ? onSuccess() : onFail();
   }
